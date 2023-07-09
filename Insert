@@ -1,0 +1,21 @@
+local modelAssetId = 14006397012 -- Replace with the actual asset ID or reference
+
+-- Function to insert the model into the game and give it to a player as a tool
+local function insertModel(player)
+	-- Clone the model and insert it into the player's Backpack
+	local model = game:GetService("InsertService"):LoadAsset(modelAssetId)
+	model.Parent = player.Backpack
+
+	-- Equip the model as a tool
+	player.CharacterAdded:Wait()
+	player.Character:WaitForChild("Humanoid").Equipped:Connect(function(newTool)
+		if newTool:IsA("Tool") and newTool.Parent == player.Character then
+			player.Character.Humanoid:EquipTool(newTool)
+		end
+	end)
+end
+
+-- Usage: Call insertModel() and pass the player as an argument to give the model as a tool
+game.Players.PlayerAdded:Connect(function(player)
+	insertModel(player)
+end)
